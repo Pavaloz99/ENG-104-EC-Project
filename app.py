@@ -1,6 +1,11 @@
 import sys
 
-from PyQt5.QtCore import QRect
+from PyQt5.QtCore import (
+    QRect,
+    QSize,
+    )
+
+import beam
 
 from PyQt5.QtWidgets import (
     QApplication,
@@ -41,9 +46,15 @@ class Window(QWidget):
         self.page2 = QWidget()
         self.page2Layout = QFormLayout()
         self.page2Layout.addRow(QLabel("Please list all external forces on member: "))
-        self.page2Layout.addRow("Force: ", QLineEdit())
-        self.page2Layout.addRow("position: ", QLineEdit())
-        self.page2Layout.addRow(QPushButton("Add"))
+        self.forceInput = QLineEdit()
+        self.forceInput.setFixedSize(QSize(100,20))
+        self.positionInput = QLineEdit()
+        self.positionInput.setFixedSize(QSize(100,20))
+        self.page2Layout.addRow("Force: ", self.forceInput)
+        self.page2Layout.addRow("position: ", self.positionInput)
+        self.addButton = QPushButton("Add")
+        self.addButton.setFixedSize(150,30)
+        self.page2Layout.addRow(self.addButton)
         self.page2.setLayout(self.page2Layout)
         self.stackedLayout.addWidget(self.page2)
         # Add the combo box and the stacked layout to the top-level layout
