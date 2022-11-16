@@ -1,5 +1,7 @@
 import sys
 
+from PyQt5.QtCore import QRect
+
 from PyQt5.QtWidgets import (
     QApplication,
     QComboBox,
@@ -9,7 +11,8 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
     QWidget,
     QLabel,
-    QPushButton
+    QPushButton,
+    
     )
 
 class Window(QWidget):
@@ -17,8 +20,10 @@ class Window(QWidget):
         super().__init__()
         self.setWindowTitle("ENG 104 Extra Credit App")
         # Create a top-level layout
-        layout = QVBoxLayout()
-        self.setLayout(layout)
+        self.layout = QVBoxLayout()
+        self.setFixedHeight(400)
+        self.setFixedWidth(900)
+        self.setLayout(self.layout)
         
         # Create the stacked layout
         self.stackedLayout = QStackedLayout()
@@ -35,11 +40,14 @@ class Window(QWidget):
         # Create the second page
         self.page2 = QWidget()
         self.page2Layout = QFormLayout()
-        self.page2Layout.addRow(QLabel("You're on the INCOMPLETE AXIAL LOAD PAGE"))
+        self.page2Layout.addRow(QLabel("Please list all external forces on member: "))
+        self.page2Layout.addRow("Force: ", QLineEdit())
+        self.page2Layout.addRow("position: ", QLineEdit())
+        self.page2Layout.addRow(QPushButton("Add"))
         self.page2.setLayout(self.page2Layout)
         self.stackedLayout.addWidget(self.page2)
         # Add the combo box and the stacked layout to the top-level layout
-        layout.addLayout(self.stackedLayout)
+        self.layout.addLayout(self.stackedLayout)
 
     def switchPage(self):
         self.stackedLayout.setCurrentWidget(self.page2)
