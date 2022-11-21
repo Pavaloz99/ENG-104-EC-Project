@@ -3,9 +3,12 @@ import sys
 from PyQt5.QtCore import (
     QRect,
     QSize,
+    
     )
 
 import beam
+
+from PyQt5 import QtGui
 
 from PyQt5.QtWidgets import (
     QApplication,
@@ -44,7 +47,11 @@ class Window(QWidget):
         self.stackedLayout.addWidget(self.page1)
         # Create the second page
         self.page2 = QWidget()
+        self.page2MainLayout = QVBoxLayout()
         self.page2Layout = QFormLayout()
+        self.page2MainLayout.addLayout(self.page2Layout)
+        self.displayAdds = QFormLayout()
+        self.page2MainLayout.addLayout(self.displayAdds)
         self.page2Layout.addRow(QLabel("Please list all external forces on member: "))
         self.forceInput = QLineEdit()
         self.forceInput.setFixedSize(QSize(100,20))
@@ -53,15 +60,19 @@ class Window(QWidget):
         self.page2Layout.addRow("Force: ", self.forceInput)
         self.page2Layout.addRow("position: ", self.positionInput)
         self.addButton = QPushButton("Add")
+        self.addButton.clicked.connect(self.appendLine)
         self.addButton.setFixedSize(150,30)
         self.page2Layout.addRow(self.addButton)
-        self.page2.setLayout(self.page2Layout)
+        self.page2.setLayout(self.page2MainLayout)
         self.stackedLayout.addWidget(self.page2)
         # Add the combo box and the stacked layout to the top-level layout
         self.layout.addLayout(self.stackedLayout)
 
     def switchPage(self):
         self.stackedLayout.setCurrentWidget(self.page2)
+
+    def appendLine(self):
+        self.displayAdds.addRow(QLabel(self.positionInput.text()), QLabel(self.forceInput.text()))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
