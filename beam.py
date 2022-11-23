@@ -3,10 +3,11 @@ class beam():
         self.length = None
         self.cArea = None
         self.radius = None
-        self.height = None
-        self.depth = None
+        self.height = 1
+        self.depth = 1
         self.modulusOfE = 20
         self.forces = []
+        self.fPos = []
 
     def netForce(self):
         netF = 0

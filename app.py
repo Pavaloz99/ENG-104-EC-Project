@@ -6,8 +6,6 @@ from PyQt5.QtCore import (
     Qt
     )
 
-
-
 import beam
 
 from PyQt5.QtWidgets import (
@@ -50,17 +48,17 @@ class Window(QWidget):
         # Create the second page
         self.page2 = QWidget()
         self.page2Layout = QVBoxLayout()
-        self.page2Layout.setSizeConstraint()
         
-        self.decBox = QWidget()
-        self.page2Layout.addWidget(self.decBox, 1,3)
+        
+        # self.decBox = QWidget()
+        # self.page2Layout.addWidget(self.decBox)
         
         
         #Title decleration, insertion and styling
-        self.title = QLabel("Please List All External Forces on Member")
+        self.title = QLabel("List All External Forces on Member")
         self.title.setFixedSize(400,20)
-        self.page2Layout.setVerticalSpacing(5)
-        self.page2Layout.addWidget(self.title, alignment=Qt.AlignCenter)
+    
+        self.page2Layout.addWidget(self.title, alignment=Qt.AlignLeft)
         self.title.setStyleSheet("padding: 0px;" 
                                 "font-family: Times-New-Roman;"
                                 "font-size: 20px;"
@@ -76,7 +74,7 @@ class Window(QWidget):
 
         #box styling
 
-        self.setStyleSheet("QLineEdit: {border-radius: 5px; } ")
+        self.setStyleSheet("QLineEdit: {border-radius: 30px; } ")
 
         self.fLabel = QLabel("Force: ")
         self.fLabel.setStyleSheet("font-size: 16px;"
@@ -85,27 +83,38 @@ class Window(QWidget):
         self.pLabel = QLabel("Position: ")
         self.pLabel.setStyleSheet("font-size: 16px;"
                                 "font-family: Times-new-roman;")
-        self.forceRow = QWidget()
-        self.forceRow.setLayout(QHBoxLayout())
-        self.forceRow.layout().addWidget(self.fLabel)
-        self.forceRow.layout().addWidget(self.forceInput)
-
+        self.rowOne = QWidget()
+        self.rowOne.setLayout(QHBoxLayout())
+        self.rowOne.layout().setAlignment(Qt.AlignLeft)
+        self.rowOne.setContentsMargins(0,10,400,200)
         
+        #Force Label and Textbox
+        self.rowOne.layout().addWidget(self.fLabel)
+        self.rowOne.layout().addWidget(self.forceInput)
         
+        #Position label and textbox
+        self.rowOne.layout().addWidget(self.pLabel)
+        self.rowOne.layout().addWidget(self.positionInput)
         
-        self.positionRow = QWidget()
-        self.positionRow.setLayout(QHBoxLayout())
-        self.page2Layout.addWidget(self.fLabel, 1,0,alignment=Qt.AlignLeft)
-        self.page2Layout.addWidget(self.forceInput,1,0,alignment=Qt.AlignHCenter)
-        self.page2Layout.addWidget(self.pLabel,2,0, alignment=Qt.AlignLeft)
-        self.page2Layout.addWidget(self.positionInput, 2,0,alignment=Qt.AlignHCenter)
+        #Button
         self.addButton = QPushButton("Add")
-        self.addButton.setFixedSize(150,30)
         self.addButton.clicked.connect(self.appendInputText)
-        self.page2Layout.addWidget(self.addButton, 3,0, alignment=Qt.AlignRight)
+        self.addButton.setFixedSize(100,30)
 
-        self.inputsLayout = QVBoxLayout()
-        self.page2Layout.addLayout(self.inputsLayout,0,3)
+        self.rowOne.layout().addWidget(self.addButton)
+        
+        
+        self.page2Layout.addWidget(self.rowOne)
+
+
+
+        
+        
+        
+        self.secondRow = QWidget()
+
+        
+        # self.page2Layout.addLayout(self.inputsLayout,0,3)
 
 
         self.page2.setLayout(self.page2Layout)
