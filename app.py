@@ -3,7 +3,8 @@ import sys
 from PyQt5.QtCore import (
     QRect,
     QSize,
-    Qt
+    Qt,
+    QPoint
     )
 
 import beam
@@ -50,30 +51,39 @@ class Window(QWidget):
         self.page2Layout = QVBoxLayout()
         
         
-        # self.decBox = QWidget()
-        # self.page2Layout.addWidget(self.decBox)
-        
         
         #Title decleration, insertion and styling
+        self.zeroRow = QWidget()
+        self.zeroRow.setLayout(QHBoxLayout())
         self.title = QLabel("List All External Forces on Member")
-        self.title.setFixedSize(400,20)
+        self.title.setFixedSize(400,25)
+
+        self.title2 = QLabel("List All Supports Acting on the Member")
+        self.title2.setStyleSheet("padding: 0px;" 
+                                "font-family: Times-New-Roman;"
+                                "font-size: 20px;"
+                                "font-weight: Bold;")
+        self.title2.setFixedSize(400,20)
     
-        self.page2Layout.addWidget(self.title, alignment=Qt.AlignLeft)
+        self.zeroRow.layout().addWidget(self.title, alignment=Qt.AlignLeft)
         self.title.setStyleSheet("padding: 0px;" 
                                 "font-family: Times-New-Roman;"
                                 "font-size: 20px;"
-                                "font-weight: vold;")
+                                "font-weight: Bold;")
+        
+        self.zeroRow.layout().addWidget(self.title2, alignment = Qt.AlignRight)
+        self.page2Layout.addWidget(self.zeroRow)
        
        #Textbox for force 
         self.forceInput = QLineEdit()
-        self.forceInput.setFixedSize(QSize(100,20))
+        self.forceInput.setFixedSize(QSize(70,20))
+        
 
         #Textbox for position
         self.positionInput = QLineEdit()
-        self.positionInput.setFixedSize(QSize(100,20))
+        self.positionInput.setFixedSize(QSize(70,20))
 
         #box styling
-
         self.setStyleSheet("QLineEdit: {border-radius: 30px; } ")
 
         self.fLabel = QLabel("Force: ")
@@ -85,23 +95,51 @@ class Window(QWidget):
                                 "font-family: Times-new-roman;")
         self.rowOne = QWidget()
         self.rowOne.setLayout(QHBoxLayout())
-        self.rowOne.layout().setAlignment(Qt.AlignLeft)
-        self.rowOne.setContentsMargins(0,10,400,200)
+        self.rowOneFirstHalf = QWidget()
+        self.rowOneFirstHalf.setLayout(QHBoxLayout())
+        self.rowOneSecondHalf = QWidget()
+        self.rowOneSecondHalf.setLayout(QHBoxLayout())
+        self.rowOne.layout().addWidget(self.rowOneFirstHalf)
+        self.rowOne.layout().addWidget(self.rowOneSecondHalf)
+        
+        
+        self.rowOneFirstHalf.setContentsMargins(0,10,120,200)
+        self.rowOneFirstHalf.layout().setSpacing(20)
+        self.rowOneSecondHalf.setContentsMargins(0,0, 50, 200)
+        self.rowOneSecondHalf.layout().setSpacing(20)
         
         #Force Label and Textbox
-        self.rowOne.layout().addWidget(self.fLabel)
-        self.rowOne.layout().addWidget(self.forceInput)
+        self.rowOneFirstHalf.layout().addWidget(self.fLabel)
+        self.rowOneFirstHalf.layout().addWidget(self.forceInput)
         
         #Position label and textbox
-        self.rowOne.layout().addWidget(self.pLabel)
-        self.rowOne.layout().addWidget(self.positionInput)
-        
+        self.rowOneFirstHalf.layout().addWidget(self.pLabel)
+        self.rowOneFirstHalf.layout().addWidget(self.positionInput)
         #Button
         self.addButton = QPushButton("Add")
         self.addButton.clicked.connect(self.appendInputText)
-        self.addButton.setFixedSize(100,30)
+        self.addButton.setFixedSize(50,30)
 
-        self.rowOne.layout().addWidget(self.addButton)
+        self.supportType = QComboBox()
+        self.supportType.addItems(["-Select-","Pin Support", "Roller Support", "Fixed End"])
+        self.supportType.setFixedSize(100, 30)
+        
+        
+        self.pLabel2 = QLabel("Position: ")
+        self.pLabel2.setStyleSheet("font-size: 16px;"
+                                "font-family: Times-new-roman;")
+
+        self.positionInput2 = QLineEdit()
+        self.positionInput2.setFixedSize(QSize(70,20))
+
+        self.rowOneFirstHalf.layout().addWidget(self.addButton)
+
+        
+        self.rowOneSecondHalf.layout().addWidget(self.pLabel2)
+        self.rowOneSecondHalf.layout().addWidget(self.positionInput2)
+        self.rowOneSecondHalf.layout().addWidget(self.supportType)
+
+   
         
         
         self.page2Layout.addWidget(self.rowOne)
