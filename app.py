@@ -4,8 +4,15 @@ from PyQt5.QtCore import (
     QRect,
     QSize,
     Qt,
-    QPoint
+    QPoint,
+    
     )
+
+
+
+from PyQt5.QtGui import (QPalette,
+                        QColor,
+)
 
 import beam
 
@@ -21,6 +28,8 @@ from PyQt5.QtWidgets import (
     QWidget,
     QLabel,
     QPushButton,
+    QScrollArea,
+    QSizePolicy,
     
     )
 
@@ -55,6 +64,7 @@ class Window(QWidget):
         #Title decleration, insertion and styling
         self.zeroRow = QWidget()
         self.zeroRow.setLayout(QHBoxLayout())
+        self.zeroRow.setFixedHeight(50)
         self.title = QLabel("List All External Forces on Member")
         self.title.setFixedSize(400,25)
 
@@ -63,15 +73,15 @@ class Window(QWidget):
                                 "font-family: Times-New-Roman;"
                                 "font-size: 20px;"
                                 "font-weight: Bold;")
-        self.title2.setFixedSize(400,20)
+        self.title2.setFixedSize(400,25)
     
-        self.zeroRow.layout().addWidget(self.title, alignment=Qt.AlignLeft)
+        self.zeroRow.layout().addWidget(self.title, alignment=Qt.AlignLeft and Qt.AlignVCenter)
         self.title.setStyleSheet("padding: 0px;" 
                                 "font-family: Times-New-Roman;"
                                 "font-size: 20px;"
                                 "font-weight: Bold;")
         
-        self.zeroRow.layout().addWidget(self.title2, alignment = Qt.AlignRight)
+        self.zeroRow.layout().addWidget(self.title2, alignment = Qt.AlignRight and Qt.AlignVCenter)
         self.page2Layout.addWidget(self.zeroRow)
        
        #Textbox for force 
@@ -90,7 +100,7 @@ class Window(QWidget):
         self.fLabel.setStyleSheet("font-size: 16px;"
                                 "font-family: Times-new-roman;")
 
-        self.pLabel = QLabel("Position: ")
+        self.pLabel = QLabel("Position:")
         self.pLabel.setStyleSheet("font-size: 16px;"
                                 "font-family: Times-new-roman;")
         self.rowOne = QWidget()
@@ -101,11 +111,11 @@ class Window(QWidget):
         self.rowOneSecondHalf.setLayout(QHBoxLayout())
         self.rowOne.layout().addWidget(self.rowOneFirstHalf)
         self.rowOne.layout().addWidget(self.rowOneSecondHalf)
+        self.rowOne.layout().setAlignment(Qt.AlignTop)
         
-        
-        self.rowOneFirstHalf.setContentsMargins(0,10,120,200)
+  
         self.rowOneFirstHalf.layout().setSpacing(20)
-        self.rowOneSecondHalf.setContentsMargins(0,0, 50, 200)
+
         self.rowOneSecondHalf.layout().setSpacing(20)
         
         #Force Label and Textbox
@@ -117,8 +127,12 @@ class Window(QWidget):
         self.rowOneFirstHalf.layout().addWidget(self.positionInput)
         #Button
         self.addButton = QPushButton("Add")
-        self.addButton.clicked.connect(self.appendInputText)
+        self.addButton.clicked.connect(self.appendExForceText)
         self.addButton.setFixedSize(50,30)
+
+        self.addButtonPos = QPushButton("Add")
+        self.addButtonPos.clicked.connect(self.appendSupportText)
+        self.addButtonPos.setFixedSize(50,30)
 
         self.supportType = QComboBox()
         self.supportType.addItems(["-Select-","Pin Support", "Roller Support", "Fixed End"])
@@ -138,8 +152,11 @@ class Window(QWidget):
         self.rowOneSecondHalf.layout().addWidget(self.pLabel2)
         self.rowOneSecondHalf.layout().addWidget(self.positionInput2)
         self.rowOneSecondHalf.layout().addWidget(self.supportType)
+        self.rowOneSecondHalf.layout().addWidget(self.addButtonPos)
 
-   
+
+
+    
         
         
         self.page2Layout.addWidget(self.rowOne)
@@ -151,9 +168,108 @@ class Window(QWidget):
         
         self.secondRow = QWidget()
 
-        
-        # self.page2Layout.addLayout(self.inputsLayout,0,3)
 
+        #Defining each column for the fourth row
+        self.secondRow1 = QWidget()
+        self.secondRow2 = QWidget()
+        self.secondRow3 = QWidget()
+        self.secondRow4 = QWidget()
+
+
+   
+        
+
+
+
+
+        self.secondRowContainer1 = QWidget()
+        self.secondRowContainer1.setLayout(QHBoxLayout())
+      
+
+        self.secondRowContainer2 = QWidget()
+        self.secondRowContainer2.setLayout(QHBoxLayout())
+    
+
+
+
+
+        self.secondRow1.setLayout(QVBoxLayout())
+        self.secondRow2.setLayout(QVBoxLayout())
+        self.secondRow3.setLayout(QVBoxLayout())
+        self.secondRow4.setLayout(QVBoxLayout())
+        
+
+
+        self.secondRowfLabel = QLabel("Force")
+        self.secondRowpLabel = QLabel("Position")
+        self.secondRowpLabel2 = QLabel("Position")
+        self.secondRowsLabel = QLabel("Support-Type")
+
+        self.secondRow1.layout().addWidget(self.secondRowfLabel)
+        self.secondRow2.layout().addWidget(self.secondRowpLabel)
+        self.secondRow3.layout().addWidget(self.secondRowpLabel2)
+        self.secondRow4.layout().addWidget(self.secondRowsLabel)
+
+
+
+        self.secondRowContainer1.layout().addWidget(self.secondRow1)
+        self.secondRowContainer1.layout().addWidget(self.secondRow2)
+        self.secondRowContainer1.layout().setSpacing(120)
+        
+        
+
+        self.secondRowContainer2.layout().addWidget(self.secondRow3)
+        self.secondRowContainer2.layout().addWidget(self.secondRow4)
+        self.secondRowContainer2.layout().setSpacing(120)
+
+        
+        
+     
+
+        self.secondRow.setLayout(QHBoxLayout())
+        self.secondRow.layout().setAlignment(Qt.AlignTop)
+        self.secondRow.setFixedSize(900,550)
+
+
+        self.scrollArea1 = QScrollArea(self.secondRow)
+        self.scrollArea1.setWidget(self.secondRowContainer1)
+        self.scrollArea1.setVisible(True)
+        self.scrollArea1.setWidgetResizable(True)
+        self.scrollArea1.setAlignment(Qt.AlignHCenter)
+        self.scrollArea1.setFixedSize(300,200)
+       
+        
+        #self.secondRowContainer1.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+      
+        
+
+
+        
+  
+     
+        
+        self.scrollArea2 = QScrollArea(self.secondRow)
+        self.scrollArea2.setWidget(self.secondRowContainer2)
+        self.scrollArea2.setWidgetResizable(True)
+        self.scrollArea2.setAlignment(Qt.AlignHCenter)
+        self.scrollArea2.setFixedSize(300,200)
+        self.scrollArea2.setVisible(True)
+
+        # self.scrollArea2.setStyleSheet("background-color: red;")
+        
+
+        self.secondRow.layout().addWidget(self.scrollArea1)
+        self.secondRow.layout().addWidget(self.scrollArea2)
+        self.secondRow.layout().setSpacing(150)
+        self.secondRow.layout().setContentsMargins(50,0,0,0)
+        
+        print(self.secondRow.sizePolicy().Policy.Fixed)
+        self.secondRowContainer1.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+        self.secondRowContainer2.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+        self.secondRowContainer1.layout().setAlignment(Qt.AlignTop)
+        self.secondRowContainer2.layout().setAlignment(Qt.AlignTop)   
+        
+        self.page2Layout.addWidget(self.secondRow)
 
         self.page2.setLayout(self.page2Layout)
         self.stackedLayout.addWidget(self.page2)
@@ -163,19 +279,21 @@ class Window(QWidget):
     def switchPage(self):
         self.stackedLayout.setCurrentWidget(self.page2)
 
-    def appendInputText(self):
+    def appendExForceText(self):
         #Store and add input values to chart
-        forceInput =QLabel(self.forceInput.text())
-        positionInput = QLabel(self.positionInput.text())
-        forceInput.setAlignment(Qt.AlignLeft)
-        positionInput.setAlignment(Qt.AlignRight) 
-        self.inputsLayout.addWidget(forceInput)
-        self.inputsLayout.addWidget(positionInput)
+        self.secondRow1.layout().addWidget(QLabel(self.forceInput.text()))
+        self.secondRow2.layout().addWidget(QLabel(self.positionInput.text()))
 
         #Delete values in the textbox's
-
         self.forceInput.setText("") 
-        self.positionInput.setText("")       
+        self.positionInput.setText("")  
+
+    def appendSupportText(self):
+        self.secondRow3.layout().addWidget(QLabel(self.positionInput2.text()))
+        self.secondRow4.layout().addWidget(QLabel(self.supportType.currentText()))
+
+        self.positionInput2.setText("")
+        self.supportType.setCurrentIndex(0)
 
 
 if __name__ == "__main__":
