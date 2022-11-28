@@ -14,7 +14,7 @@ from PyQt5.QtGui import (QPalette,
                         QColor,
 )
 
-import beam
+from beam import beam
 
 from PyQt5.QtWidgets import (
     QApplication,
@@ -33,9 +33,13 @@ from PyQt5.QtWidgets import (
     
     )
 
+
+
+
 class Window(QWidget):
     def __init__(self):
         super().__init__()
+        self.myBeam = beam()
         self.setWindowTitle("ENG 104 Extra Credit App")
         # Create a top-level layout
         self.layout = QVBoxLayout()
@@ -112,6 +116,10 @@ class Window(QWidget):
         self.rowOne.layout().addWidget(self.rowOneFirstHalf)
         self.rowOne.layout().addWidget(self.rowOneSecondHalf)
         self.rowOne.layout().setAlignment(Qt.AlignTop)
+
+        
+
+        self.rowOne.setFixedHeight(50)
         
   
         self.rowOneFirstHalf.layout().setSpacing(20)
@@ -228,7 +236,7 @@ class Window(QWidget):
 
         self.secondRow.setLayout(QHBoxLayout())
         self.secondRow.layout().setAlignment(Qt.AlignTop)
-        self.secondRow.setFixedSize(900,550)
+        self.secondRow.setFixedSize(900,140)
 
 
         self.scrollArea1 = QScrollArea(self.secondRow)
@@ -236,7 +244,7 @@ class Window(QWidget):
         self.scrollArea1.setVisible(True)
         self.scrollArea1.setWidgetResizable(True)
         self.scrollArea1.setAlignment(Qt.AlignHCenter)
-        self.scrollArea1.setFixedSize(300,200)
+        self.scrollArea1.setFixedSize(300,130)
        
         
         #self.secondRowContainer1.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
@@ -252,7 +260,7 @@ class Window(QWidget):
         self.scrollArea2.setWidget(self.secondRowContainer2)
         self.scrollArea2.setWidgetResizable(True)
         self.scrollArea2.setAlignment(Qt.AlignHCenter)
-        self.scrollArea2.setFixedSize(300,200)
+        self.scrollArea2.setFixedSize(300,130)
         self.scrollArea2.setVisible(True)
 
         # self.scrollArea2.setStyleSheet("background-color: red;")
@@ -271,10 +279,63 @@ class Window(QWidget):
         
         self.page2Layout.addWidget(self.secondRow)
 
+        #Page2 row 3
+        self.row3 = QWidget()
+        self.row3.setLayout(QHBoxLayout())
+        self.row3.layout().setAlignment(Qt.AlignLeft)
+        self.optionsLabel = QLabel("Find:")
+        self.optionsLabel.setFixedWidth(40)
+        self.optionsLabel.setStyleSheet("font-family: times-new-roman;"
+                                        "font-size: 14px;"
+                                        "font-weight: bold;")
+        self.calcOption = QComboBox()
+        self.calcOption.addItems(["Elongation", "Normal Stress", "Reaction Forces (determinate)", "Reaction Forces (indeterminate)"])
+
+
+        self.calcOption.objectNameChanged.connect(self.changeInputOption)
+
+
+        self.calcOption.setFixedWidth(180)
+        self.row3.layout().addWidget(self.optionsLabel)
+        self.row3.layout().addWidget(self.calcOption)
+
+        self.nextPBttn = QPushButton("Calculate")
+        self.nextPBttn.setFixedWidth(60)
+        self.nextPBttn.clicked.connect(self.calc)
+
+
+        self.elonKnowns = QWidget()
+        self.elonKnowns.setLayout(QHBoxLayout())
+
+
+
+        self.lengthAsk = QLabel("Beam Length[m]:")
+        self.lengthInput = QLineEdit()
+        self.areaAsk = QLabel("Cross-Sectional Area[mm^2]: ")
+        self.areaInput = QLineEdit()
+
+        self.modEInputLabel = QLabel("Young's Modulus")
+        self.modEInput = QLineEdit()
+        self.elonKnowns.layout().addWidget(self.lengthAsk)
+        self.elonKnowns.layout().addWidget(self.lengthInput)
+        self.elonKnowns.layout().addWidget(self.areaAsk)
+        self.elonKnowns.layout().addWidget(self.areaInput)
+        self.elonKnowns.layout().addWidget(self.modEInputLabel)
+        self.elonKnowns.layout().addWidget(self.modEInput)
+
+        self.row3.layout().addWidget(self.elonKnowns)
+
+
+        self.row3.layout().addWidget(self.nextPBttn)
+        self.page2Layout.addWidget(self.row3)
+
         self.page2.setLayout(self.page2Layout)
         self.stackedLayout.addWidget(self.page2)
         # Add the combo box and the stacked layout to the top-level layout
         self.layout.addLayout(self.stackedLayout)
+
+
+    
 
     def switchPage(self):
         self.stackedLayout.setCurrentWidget(self.page2)
@@ -283,6 +344,7 @@ class Window(QWidget):
         #Store and add input values to chart
         self.secondRow1.layout().addWidget(QLabel(self.forceInput.text()))
         self.secondRow2.layout().addWidget(QLabel(self.positionInput.text()))
+        self.myBeam.addEForce(int(self.forceInput.text()))
 
         #Delete values in the textbox's
         self.forceInput.setText("") 
@@ -294,8 +356,25 @@ class Window(QWidget):
 
         self.positionInput2.setText("")
         self.supportType.setCurrentIndex(0)
+    
+    def calc(self):
+        force = 0
+        for i in range(len(self.myBeam.forces)):
+            force += self.myBeam.forces[i]
+        
+        self.myBeam.changelength(float(self.lengthInput.text()))
+        self.myBeam.changecArea(float(self.areaInput.text()))
+        self.myBeam.changeMod(float(self.modEInput.text()))
+        return print(self.myBeam.calculateElongation())
 
+    def changeInputOption(self):
+        if(self.calcOption.currentText == "Elongation"):
+            self.elonKnowns.show()
+        else:
+            self.elonKnowns.hide()
 
+    def axCalc(self):
+        return
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = Window()
