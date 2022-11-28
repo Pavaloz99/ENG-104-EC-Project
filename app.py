@@ -43,8 +43,8 @@ class Window(QWidget):
         self.setWindowTitle("ENG 104 Extra Credit App")
         # Create a top-level layout
         self.layout = QVBoxLayout()
-        self.setFixedHeight(400)
-        self.setFixedWidth(900)
+        self.setFixedHeight(500)
+        self.setFixedWidth(1000)
         self.setLayout(self.layout)
         
         # Create the stacked layout
@@ -56,7 +56,7 @@ class Window(QWidget):
         self.axButton = QPushButton("Axial Load")
         self.axButton.clicked.connect(self.switchPage)
         self.page1Layout.addRow(self.axButton)
-        self.page1Layout.addRow(QPushButton("Other Stuff"))
+        self.page1Layout.addRow(QPushButton("Torsion"))
         self.page1.setLayout(self.page1Layout)
         self.stackedLayout.addWidget(self.page1)
         # Create the second page
@@ -101,10 +101,12 @@ class Window(QWidget):
         self.setStyleSheet("QLineEdit: {border-radius: 30px; } ")
 
         self.fLabel = QLabel("Force: ")
+        self.fLabel.setFixedWidth(70)
         self.fLabel.setStyleSheet("font-size: 16px;"
                                 "font-family: Times-new-roman;")
 
         self.pLabel = QLabel("Position:")
+        self.pLabel.setFixedWidth(70)
         self.pLabel.setStyleSheet("font-size: 16px;"
                                 "font-family: Times-new-roman;")
         self.rowOne = QWidget()
@@ -119,12 +121,12 @@ class Window(QWidget):
 
         
 
-        self.rowOne.setFixedHeight(50)
+        self.rowOne.setFixedHeight(70)
         
   
-        self.rowOneFirstHalf.layout().setSpacing(20)
+        self.rowOneFirstHalf.layout().setSpacing(3)
 
-        self.rowOneSecondHalf.layout().setSpacing(20)
+        self.rowOneSecondHalf.layout().setSpacing(3)
         
         #Force Label and Textbox
         self.rowOneFirstHalf.layout().addWidget(self.fLabel)
@@ -147,12 +149,13 @@ class Window(QWidget):
         self.supportType.setFixedSize(100, 30)
         
         
-        self.pLabel2 = QLabel("Position: ")
+        self.pLabel2 = QLabel("Position:")
+        self.pLabel2.setFixedWidth(70)
         self.pLabel2.setStyleSheet("font-size: 16px;"
                                 "font-family: Times-new-roman;")
 
         self.positionInput2 = QLineEdit()
-        self.positionInput2.setFixedSize(QSize(70,20))
+        self.positionInput2.setFixedSize(QSize(50,20))
 
         self.rowOneFirstHalf.layout().addWidget(self.addButton)
 
@@ -244,7 +247,7 @@ class Window(QWidget):
         self.scrollArea1.setVisible(True)
         self.scrollArea1.setWidgetResizable(True)
         self.scrollArea1.setAlignment(Qt.AlignHCenter)
-        self.scrollArea1.setFixedSize(300,130)
+        self.scrollArea1.setFixedSize(320,140)
        
         
         #self.secondRowContainer1.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
@@ -260,7 +263,7 @@ class Window(QWidget):
         self.scrollArea2.setWidget(self.secondRowContainer2)
         self.scrollArea2.setWidgetResizable(True)
         self.scrollArea2.setAlignment(Qt.AlignHCenter)
-        self.scrollArea2.setFixedSize(300,130)
+        self.scrollArea2.setFixedSize(320,140)
         self.scrollArea2.setVisible(True)
 
         # self.scrollArea2.setStyleSheet("background-color: red;")
@@ -268,7 +271,7 @@ class Window(QWidget):
 
         self.secondRow.layout().addWidget(self.scrollArea1)
         self.secondRow.layout().addWidget(self.scrollArea2)
-        self.secondRow.layout().setSpacing(150)
+        self.secondRow.layout().setSpacing(140)
         self.secondRow.layout().setContentsMargins(50,0,0,0)
         
         print(self.secondRow.sizePolicy().Policy.Fixed)
