@@ -348,6 +348,7 @@ class Window(QWidget):
         self.secondRow1.layout().addWidget(QLabel(self.forceInput.text()))
         self.secondRow2.layout().addWidget(QLabel(self.positionInput.text()))
         self.myBeam.addEForce(int(self.forceInput.text()))
+        self.myBeam.addtForce(int(self.forceInput.text()), int(self.positionInput.text()))
 
         #Delete values in the textbox's
         self.forceInput.setText("") 
@@ -365,10 +366,13 @@ class Window(QWidget):
         for i in range(len(self.myBeam.forces)):
             force += self.myBeam.forces[i]
         
+        
+        
         self.myBeam.changelength(float(self.lengthInput.text()))
         self.myBeam.changecArea(float(self.areaInput.text()))
         self.myBeam.changeMod(float(self.modEInput.text()))
-        return print(self.myBeam.calculateElongation())
+
+        return print(self.myBeam.calculateElongation(), self.myBeam.torsionCalc())
 
     def changeInputOption(self):
         if(self.calcOption.currentText == "Elongation"):

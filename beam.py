@@ -1,3 +1,5 @@
+import numpy as np
+
 class beam():
     def __init__(self):
         self.length = None
@@ -6,6 +8,7 @@ class beam():
         self.height = 1
         self.depth = 1
         self.modulusOfE = 20
+        self.modulusOfG = 80000000000
         self.forces = []
         self.tForces = {}
         self.fPos = []
@@ -35,9 +38,10 @@ class beam():
     def addposition(self, pos):
         self.fPos.append(pos)
 
+
     def addtForce(self, force, pos):
-        if(self.tForces[str(pos)]):
-            tempArry = list(self.tForces[str(pos)])
+        if(pos in self.tForces):
+            tempArry = list().append(self.tForces[str(pos)])
             self.tForces.update({str(pos): tempArry.append(force)})
 
         else:
@@ -47,15 +51,46 @@ class beam():
         #forces should be given as "+" for out of page and "-" for into page
         #position for this case will be in the y-dir relative to the bar
         #torque in one position x along the bar
-        torque = [
-            []
-            ]
-        tpositionAlongX = self.tForces.keys()
-
+        torque = []
+        tpositionAlongX = list(self.tForces)
+        
         for i in range(len(self.tForces)):
-            position = self.tForces[str(tpositionAlongX[i])]
-            for k in range(len(self.tForces[str(position)])):
-                
+            position = str(tpositionAlongX[i])
+            force = self.tForces[str(position)][0] if type(self.tForces[str(position)]) is type(list()) else self.tForces[str(position)]
+            k = 1
+            
+            for k in range(len(self.tForces)):
+                torque[i][0] += force * self.tForces[str(position)][k] ##this is where I left off debugging
+            
+            torque[i][1] = position 
+            #Polar Moment
+            
+            diameter = np.sqrt((self.cArea*4)/(np.pi))
+
+            J = (np.pi/32)*((diameter)**4)
+            
+        Tau = []
+        angleOfTwist = []
+        netT = 0 
+        for t in torque:
+            netT += torque[t][0]
+        torque.insert(0, [-netT,0])  
+
+        for j in range(len(torque)):
+            Tau[j][0] = (torque[j][0]*(diameter/(2*1000)))/J
+            Tau[j][1] = torque[j][1]
+
+            angleOfTwist[j][0] = (torque[j][0]*int(tpositionAlongX[j]))/((self.modulusOfG)(*J))
+            angleOfTwist[j][1] = torque[j][0]
+        return[Tau, angleOfTwist]
+
+        
+        
+            
+
+
+
+
         
             
 
