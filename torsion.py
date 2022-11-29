@@ -7,6 +7,7 @@ def f_interaction(F_B1,F_B2,F_C1,F_C2,r_B,r_C,r,L_BC,G):
     #r radius of shaft [mm]
     #L_BC length of Shaft from B to C [m]
     #G shear modulus [GPa]
+    #Tau, 
     T_B=(F_B1-F_B2)*r_B #torque at B [NM]
     T_C=(F_C1-F_C2)*r_C #torque at C [NM]
     J=np.pi/32*(r*2/1000)**4
