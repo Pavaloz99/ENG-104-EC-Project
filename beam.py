@@ -51,38 +51,34 @@ class beam():
         #forces should be given as "+" for out of page and "-" for into page
         #position for this case will be in the y-dir relative to the bar
         #torque in one position x along the bar
-        torque = []
+        torque = {}
         tpositionAlongX = list(self.tForces)
         
         for i in range(len(self.tForces)):
             position = str(tpositionAlongX[i])
             force = self.tForces[str(position)][0] if type(self.tForces[str(position)]) is type(list()) else self.tForces[str(position)]
+            print (force)
             k = 1
-            
+            netT = 0
             for k in range(len(self.tForces)):
-                torque[i][0] += force * self.tForces[str(position)][k] ##this is where I left off debugging
-            
-            torque[i][1] = position 
+                netT += force * (self.tForces.get(str(position))[k] if type(self.tForces.get(str(position))) is list() else self.tForces.get(str(position))) ##this is where I left off debugging
+            torque.update({str(position): netT})
             #Polar Moment
             
             diameter = np.sqrt((self.cArea*4)/(np.pi))
 
             J = (np.pi/32)*((diameter)**4)
             
-        Tau = []
-        angleOfTwist = []
-        netT = 0 
-        for t in torque:
-            netT += torque[t][0]
-        torque.insert(0, [-netT,0])  
+        Tau = {}
+        # angleOfTwist = {}  
 
-        for j in range(len(torque)):
-            Tau[j][0] = (torque[j][0]*(diameter/(2*1000)))/J
-            Tau[j][1] = torque[j][1]
+        for pos in torque:
+            Tau.update({str(pos): torque[pos]*(diameter/(2*1000))/J})
+            
 
-            angleOfTwist[j][0] = (torque[j][0]*int(tpositionAlongX[j]))/((self.modulusOfG)(*J))
-            angleOfTwist[j][1] = torque[j][0]
-        return[Tau, angleOfTwist]
+            # angleOfTwist[j][0] = (torque[j][0]*int(tpositionAlongX[j]))/((self.modulusOfG)(*J))
+            # angleOfTwist[j][1] = torque[j][0]
+        return[Tau]
 
         
         
