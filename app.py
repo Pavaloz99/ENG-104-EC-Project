@@ -5,6 +5,9 @@ from PyQt5.QtCore import (
     QSize,
     Qt,
     QPoint,
+    QAbstractItemModel,
+    QStringListModel
+    
     
     )
 
@@ -30,6 +33,10 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QScrollArea,
     QSizePolicy,
+    QListView,
+    QListWidget,
+    QListWidgetItem,
+    
     
     )
 
@@ -56,7 +63,9 @@ class Window(QWidget):
         self.axButton = QPushButton("Axial Load")
         self.axButton.clicked.connect(self.switchPage)
         self.page1Layout.addRow(self.axButton)
-        self.page1Layout.addRow(QPushButton("Torsion"))
+        self.tButton = QPushButton("Torsion")
+        self.tButton.clicked.connect(self.switchTor)
+        self.page1Layout.addRow(self.tButton)
         self.page1Layout.addRow(QPushButton("Bending"))
         self.page1.setLayout(self.page1Layout)
         self.stackedLayout.addWidget(self.page1)
@@ -214,6 +223,7 @@ class Window(QWidget):
 
         self.secondRowfLabel = QLabel("Force")
         self.secondRowpLabel = QLabel("Position")
+        self.secondRowdLabel = QLabel("Distance")
         self.secondRowpLabel2 = QLabel("Position")
         self.secondRowsLabel = QLabel("Support-Type")
 
@@ -334,15 +344,102 @@ class Window(QWidget):
         self.page2Layout.addWidget(self.row3)
 
         self.page2.setLayout(self.page2Layout)
+
+        self.page3 = QWidget()
+
+        self.page3.setLayout(QVBoxLayout())
+
+        self.p3R1 = QWidget()
+        self.p3R1.setLayout(QHBoxLayout())
+        self.p3R1.layout().addWidget(QLabel("List Forces, distance and position on Bar"))
+
+        self.p3r2 = QWidget()
+        self.p3r2.setLayout(QHBoxLayout())
+
+        
+        self.p3r3 = QWidget()
+        self.p3r3.setLayout(QHBoxLayout())
+        self.p3r3.setFixedSize(800,100)
+        self.p3r3gridW = QWidget()
+        self.p3r3gridW.setLayout(QGridLayout())
+        self.p3r3.layout().addWidget(self.p3r3gridW)
+        self.p3r3.layout().setAlignment(Qt.AlignHCenter)
+        self.p3r3Scroll = QScrollArea(self.p3r3)
+        self.p3r3Scroll.setWidget(self.p3r3gridW)
+        self.p3r3Scroll.setWidgetResizable(True)
+        self.p3r3Scroll.setFixedSize(800,100)
+        self.p3r3Scroll.setVisible(True)
+        print(self.page3.children())
+
+    
+       
+       
+
+        self.tfLabel = QLabel("Force")
+        self.tdLabel = QLabel("Distance")
+        self.tpLabel = QLabel("Position")
+
+
+        self.tfInput = QLineEdit()
+        self.tdInput = QLineEdit()
+        self.tpInput = QLineEdit()
+
+        self.torAddBttn = QPushButton("Add")
+        self.torAddBttn.clicked.connect(self.appendTorInputs)
+
+
+        
+
+
+        
+        
+        
+        
+        
+        
+
+
+
+        self.p3r2.layout().addWidget(self.tfLabel)
+        self.p3r2.layout().addWidget(self.tfInput)
+        self.p3r2.layout().addWidget(self.tdLabel)
+        self.p3r2.layout().addWidget(self.tdInput)
+        self.p3r2.layout().addWidget(self.tpLabel)
+        self.p3r2.layout().addWidget(self.tpInput)
+        self.p3r2.layout().addWidget(self.torAddBttn)
+
+
+        
+
+
+        self.page3.layout().addWidget(self.p3R1)
+        self.page3.layout().addWidget(self.p3r2)
+        self.page3.layout().addWidget(self.p3r3)
         self.stackedLayout.addWidget(self.page2)
+        self.stackedLayout.addWidget(self.page3)
         # Add the combo box and the stacked layout to the top-level layout
         self.layout.addLayout(self.stackedLayout)
 
+    
 
+    def appendTorInputs(self):
+        position = self.p3r3gridW.layout().rowCount()
+        self.p3r3gridW.layout().addWidget(QLabel(self.tfInput.text()),position,0)
+        self.p3r3gridW.layout().addWidget(QLabel(self.tdInput.text()),position,1)
+        self.p3r3gridW.layout().addWidget(QLabel(self.tpInput.text()),position,2)
+
+        self.tfInput.setText("")
+        self.tdInput.setText("")
+        self.tpInput.setText("")
+        
     
 
     def switchPage(self):
         self.stackedLayout.setCurrentWidget(self.page2)
+
+    def switchTor(self):
+        self.stackedLayout.setCurrentWidget(self.page3)
+
 
     def appendExForceText(self):
         #Store and add input values to chart

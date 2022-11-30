@@ -54,15 +54,14 @@ class beam():
         torque = {}
         tpositionAlongX = list(self.tForces)
         
-        for i in range(len(self.tForces)):
-            position = str(tpositionAlongX[i])
-            force = self.tForces[str(position)][0] if type(self.tForces[str(position)]) is type(list()) else self.tForces[str(position)]
+        for pos in self.tForces:
+            force = self.tForces[pos][0]
             print (force)
             k = 1
             netT = 0
-            for k in range(len(self.tForces)):
-                netT += force * (self.tForces.get(str(position))[k] if type(self.tForces.get(str(position))) is list() else self.tForces.get(str(position))) ##this is where I left off debugging
-            torque.update({str(position): netT})
+            for k in range(len(self.tForces[pos])):
+                netT += force * (self.tForces[pos][k]) ##this is where I left off debugging
+            torque.update({str(pos): netT})
             #Polar Moment
             
             diameter = np.sqrt((self.cArea*4)/(np.pi))
