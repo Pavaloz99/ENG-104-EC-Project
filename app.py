@@ -57,6 +57,7 @@ class Window(QWidget):
         self.axButton.clicked.connect(self.switchPage)
         self.page1Layout.addRow(self.axButton)
         self.page1Layout.addRow(QPushButton("Torsion"))
+        self.page1Layout.addRow(QPushButton("Bending"))
         self.page1.setLayout(self.page1Layout)
         self.stackedLayout.addWidget(self.page1)
         # Create the second page
