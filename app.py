@@ -337,11 +337,30 @@ class Window(QWidget):
         self.elonKnowns.layout().addWidget(self.modEInputLabel)
         self.elonKnowns.layout().addWidget(self.modEInput)
 
+
+
+
+        self.compatibilityL = QLabel("Compatibility:")
+
+        self.compatibilityCombo = QComboBox()
+        self.compatibilityCombo.addItems(["Elongation = 0", "Elongation <= x"])
+        self.compatibilityCombo.setFixedSize(140,30)
+
+        self.row4 = QWidget()
+        self.row4.setLayout(QHBoxLayout())
+        self.row4.layout().setAlignment(Qt.AlignLeft)
+        self.row4.layout().setSpacing(10)
+        self.row4.layout().addWidget(self.compatibilityL)
+        self.row4.layout().addWidget(self.compatibilityCombo)
+
+
+
         self.row3.layout().addWidget(self.elonKnowns)
 
 
         self.row3.layout().addWidget(self.nextPBttn)
         self.page2Layout.addWidget(self.row3)
+        self.page2Layout.addWidget(self.row4)
 
         self.page2.setLayout(self.page2Layout)
 
@@ -359,15 +378,16 @@ class Window(QWidget):
         
         self.p3r3 = QWidget()
         self.p3r3.setLayout(QHBoxLayout())
-        self.p3r3.setFixedSize(800,100)
         self.p3r3gridW = QWidget()
         self.p3r3gridW.setLayout(QGridLayout())
+        self.p3r3gridW.setFixedSize(800,100)
+        self.p3r3gridW.layout().setAlignment(Qt.AlignHCenter)
         self.p3r3.layout().addWidget(self.p3r3gridW)
-        self.p3r3.layout().setAlignment(Qt.AlignHCenter)
+        self.p3r3.layout().setAlignment(Qt.AlignCenter)
         self.p3r3Scroll = QScrollArea(self.p3r3)
         self.p3r3Scroll.setWidget(self.p3r3gridW)
-        self.p3r3Scroll.setWidgetResizable(True)
-        self.p3r3Scroll.setFixedSize(800,100)
+        self.p3r3Scroll.setFixedSize(900,180)
+        self.p3r3Scroll.setAlignment(Qt.AlignCenter)
         self.p3r3Scroll.setVisible(True)
         print(self.page3.children())
 
