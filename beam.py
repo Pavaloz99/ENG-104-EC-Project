@@ -52,12 +52,12 @@ class beam():
             ]
         tpositionAlongX = self.tForces.keys()
 
-        for i in range(len(self.tForces)):
-            position = self.tForces[str(tpositionAlongX[i])]
-            for k in range(len(self.tForces[str(position)])):
+        # for i in range(len(self.tForces)):
+        #     position = self.tForces[str(tpositionAlongX[i])]
+        #     for k in range(len(self.tForces[str(position)])):
                 
         
             
 
-    def calculateElongation(self):
-        return print(((self.netForce()*self.length)/((self.cArea)*self.modulusOfE)))
+    # def calculateElongation(self):
+    #     return print(((self.netForce()*self.length)/((self.cArea)*self.modulusOfE)))
