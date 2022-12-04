@@ -3,15 +3,19 @@ import numpy as np
 class beam():
     def __init__(self):
         self.length = None
-        self.cArea = None
+        self.cAreaConst = None
         self.radius = None
         self.height = 1
         self.depth = 1
-        self.modulusOfE = 20
-        self.modulusOfG = 80000000000
+        self.modulusConst = None
+        self.cAreaChanging = {} 
+        self.sections = {}
+        self.modulusChagning = {}
         self.forces = []
         self.tForces = {}
         self.fPos = []
+        self.compatibility = None
+        self.forceEq = None
 
     def netForce(self):
         netF = 0
@@ -79,7 +83,35 @@ class beam():
             # angleOfTwist[j][1] = torque[j][0]
         return[Tau]
 
-        
+    def axLoadIndRxnForces(self):
+        if self.compatibility == 0:
+            netForce = 0
+            delta = []
+            b = []
+            superposition = 0
+            forceTotal = 0
+            for pos in range(len(self.fPos)):
+                forceTotal = 0
+                ##first delta
+                if pos == 0:
+                    delta.append(self.fPos[pos])
+                    forceTotal += self.forces[pos]
+                #last delta
+                if pos == len(self.fPos)-1:
+                    delta.append((self.length - self.fPos[pos]))
+                    b.append(-superposition)
+                #Adding all middle contributions
+                else:
+                    
+                    superposition += forceTotal*self.fPos[pos]
+                    forceTotal += self.forces[pos]
+                
+            self.a = np.array([[1,-1],delta]) 
+            self.forceEq = np.array([-sum(self.forces), superposition])
+
+
+            return print(np.linalg.solve(self.a,self.forceEq))
+           
         
             
 
@@ -90,4 +122,4 @@ class beam():
             
 
     def calculateElongation(self):
-        return print(((self.netForce()*self.length)/((self.cArea)*self.modulusOfE)))
+        return ((self.netForce()*self.length)/((self.cArea)*self.modulusOfE))
