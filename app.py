@@ -50,7 +50,7 @@ class Window(QWidget):
         self.setWindowTitle("ENG 104 Extra Credit App")
         # Create a top-level layout
         self.layout = QVBoxLayout()
-        self.setFixedHeight(600)
+        self.setFixedHeight(500)
         self.setFixedWidth(1000)
         self.setLayout(self.layout)
         
@@ -380,31 +380,31 @@ class Window(QWidget):
 
         
 
-        self.row5 = QWidget()
-        self.row5.setLayout(QHBoxLayout())
-        self.row5.layout().setAlignment(Qt.AlignLeft)
-        self.row5.setFixedWidth(900)
-        self.moreSections = QPushButton("Add a section")
-        self.moreSections.clicked.connect(self.addSectionInputs)
-        self.moreSectionsBox = QWidget()
-        self.moreSectionsBox.setLayout(QVBoxLayout())
-        self.moreSectionsBox.setFixedSize(600,100)
-        self.moreSectionsBox.layout().setAlignment(Qt.AlignCenter)
-        self.scrollContainer = QWidget()
-        self.scrollContainer.setLayout(QVBoxLayout())
+        # self.row5 = QWidget()
+        # self.row5.setLayout(QHBoxLayout())
+        # self.row5.layout().setAlignment(Qt.AlignLeft)
+        # self.row5.setFixedWidth(900)
+        # self.moreSections = QPushButton("Add a section")
+        # self.moreSections.clicked.connect(self.addSectionInputs)
+        # self.moreSectionsBox = QWidget()
+        # self.moreSectionsBox.setLayout(QVBoxLayout())
+        # self.moreSectionsBox.setFixedSize(600,100)
+        # self.moreSectionsBox.layout().setAlignment(Qt.AlignCenter)
+        # self.scrollContainer = QWidget()
+        # self.scrollContainer.setLayout(QVBoxLayout())
         
      
-        self.moreSectionScroll = QScrollArea(self.moreSectionsBox)
-        self.moreSectionScroll.setAlignment(Qt.AlignCenter)
-        self.moreSectionScroll.setWidgetResizable(True)
-        self.moreSectionScroll.setVisible(True)
-        self.moreSectionScroll.setFixedSize(600, 100)
+        # self.moreSectionScroll = QScrollArea(self.moreSectionsBox)
+        # self.moreSectionScroll.setAlignment(Qt.AlignCenter)
+        # self.moreSectionScroll.setWidgetResizable(True)
+        # self.moreSectionScroll.setVisible(True)
+        # self.moreSectionScroll.setFixedSize(600, 100)
         
-        self.moreSectionScroll.setWidget(self.scrollContainer)
+        # self.moreSectionScroll.setWidget(self.scrollContainer)
     
         
-        self.row5.layout().addWidget(self.moreSections)
-        self.row5.layout().addWidget(self.moreSectionsBox)
+        # self.row5.layout().addWidget(self.moreSections)
+        # self.row5.layout().addWidget(self.moreSectionsBox)
 
         
 
@@ -416,7 +416,7 @@ class Window(QWidget):
         self.row3.layout().addWidget(self.nextPBttn)
         self.page2Layout.addWidget(self.row3)
         self.page2Layout.addWidget(self.row4)
-        self.page2Layout.addWidget(self.row5)
+        #self.page2Layout.addWidget(self.row5)
 
         self.page2.setLayout(self.page2Layout)
 
@@ -499,31 +499,31 @@ class Window(QWidget):
     
 
 
-    def addSectionInputs(self):
-        areaLabel = QLabel("Cross-Sectional Area [m^2]")
-        areaInput = QLineEdit()
-        areaInput.setObjectName("aInput")
-        endSection = QLabel("End Position")
-        endSectionInput = QLineEdit()
-        endSectionInput.setObjectName("endSection")
-        areaModLabel = QLabel("Modulus")
-        areaModInput = QLineEdit()
-        areaModInput.setObjectName("modInput")
+    # def addSectionInputs(self):
+    #     areaLabel = QLabel("Cross-Sectional Area [m^2]")
+    #     areaInput = QLineEdit()
+    #     areaInput.setObjectName("aInput")
+    #     endSection = QLabel("End Position")
+    #     endSectionInput = QLineEdit()
+    #     endSectionInput.setObjectName("endSection")
+    #     areaModLabel = QLabel("Modulus")
+    #     areaModInput = QLineEdit()
+    #     areaModInput.setObjectName("modInput")
 
-        newline = QWidget()
-        newline.setLayout(QHBoxLayout())
+    #     newline = QWidget()
+    #     newline.setLayout(QHBoxLayout())
 
        
-        newline.layout().addWidget(areaLabel)
-        newline.layout().addWidget(areaInput)
-        newline.layout().addWidget(endSection)
-        newline.layout().addWidget(endSectionInput)
-        newline.layout().addWidget(areaModLabel)
-        newline.layout().addWidget(areaModInput)
+    #     newline.layout().addWidget(areaLabel)
+    #     newline.layout().addWidget(areaInput)
+    #     newline.layout().addWidget(endSection)
+    #     newline.layout().addWidget(endSectionInput)
+    #     newline.layout().addWidget(areaModLabel)
+    #     newline.layout().addWidget(areaModInput)
 
-        self.scrollContainer.layout().addWidget(newline)
+    #     self.scrollContainer.layout().addWidget(newline)
 
-        return
+    #     return
     def addXInputs(self):
         if self.compatibilityCombo.currentText() == "Elongation <= x":
             self.xLabel.show()
@@ -575,14 +575,6 @@ class Window(QWidget):
         
         #Check for multiple Sections
 
-        if self.scrollContainer.children():
-            for child in self.scrollContainer.children():
-                lines = child.findChildren(QLineEdit)
-                for input in lines:
-                    print(input.text())
-
-                
-
         self.myBeam.length = float(self.lengthInput.text())
         if self.calcOption.currentText() == "Elongation":
             self.myBeam.cArea = float(self.areaInput.text())
@@ -596,7 +588,11 @@ class Window(QWidget):
         elif self.calcOption.currentText() == "Reaction Forces (indeterminate)":
             if self.compatibilityCombo.currentText() == "Elongation = 0":
                 self.myBeam.compatibility = 0
-                print(self.myBeam.axLoadIndRxnForces())
+                ans = self.myBeam.axLoadIndRxnForces()
+                self.row4.layout().addWidget(QLabel("Answer -  F_a:"))
+                self.row4.layout().addWidget(QLabel(str(ans[0])))
+                self.row4.layout().addWidget(QLabel(" F_b:"))
+                self.row4.layout().addWidget(QLabel(str(ans[1])))
 
     def changeInputOption(self):
         if(self.calcOption.currentText() == "Reaction Forces (indeterminate)"):

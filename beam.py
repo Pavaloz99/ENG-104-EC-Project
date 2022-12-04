@@ -98,7 +98,7 @@ class beam():
                     forceTotal += self.forces[pos]
                 #last delta
                 if pos == len(self.fPos)-1:
-                    delta.append((self.length - self.fPos[pos]))
+                    delta.append(-(self.length - self.fPos[pos]))
                     b.append(-superposition)
                 #Adding all middle contributions
                 else:
@@ -106,11 +106,11 @@ class beam():
                     superposition += forceTotal*self.fPos[pos]
                     forceTotal += self.forces[pos]
                 
-            self.a = np.array([[1,-1],delta]) 
+            self.a = np.array([[1,1],delta]) 
             self.forceEq = np.array([-sum(self.forces), superposition])
 
 
-            return print(np.linalg.solve(self.a,self.forceEq))
+            return np.linalg.solve(self.a,self.forceEq)
            
         
             
